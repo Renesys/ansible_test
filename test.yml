@@ -1,0 +1,31 @@
+- hosts: client
+  user: root
+  tasks:
+  - name: changing selinux setting
+    lineinfile:
+      path: /etc/selinux/config
+      regexp: '^SELINUX='
+      line: SELINUX=disabled
+  - sysctl:
+      name: kernel.panic
+      value: 5
+      sysctl_file: /tmp/test_sysctl.conf
+      reload: no
+  # - name: touch testfile
+  #   file:
+  #     path: /root/hello.txt
+  #     state: touch
+  #     mode: '0600'
+  - name: modifying permission
+    file:
+      path: /root/hello.txt
+      mode: '0644'
+  - name: modifying wtmp
+    file:
+      path: /var/log/wtmp
+      mode: '0664'
+  - name: copy test
+    copy:
+      src: /root/aaa
+      dest: /tmp/bbb
+      mode: '777' 
